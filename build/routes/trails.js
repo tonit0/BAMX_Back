@@ -1,0 +1,10 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const trails_1 = require("../controllers/trails");
+const route = (0, express_1.Router)();
+route.get('/', trails_1.TrailsController.getAll);
+route.get('/:id', trails_1.TrailsController.getTrailById);
+route.post('/', trails_1.TrailsController.insert);
+route.put('/:id', trails_1.TrailsController.update);
+exports.default = route;

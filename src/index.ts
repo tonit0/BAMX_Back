@@ -3,7 +3,8 @@ import express from "express";
 import cors from "cors";
 import routes from "./routes/index";
 
-const PORT = process.env.PORT || 3001; 
+const PORT = process.env.PORT || 3001;
+
 const app = express();
 
 app.use((_req, res, next) => {

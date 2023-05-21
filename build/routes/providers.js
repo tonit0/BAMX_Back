@@ -1,0 +1,10 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const providers_1 = require("../controllers/providers");
+const route = (0, express_1.Router)();
+route.get('/', providers_1.ProvidersController.getAll);
+route.get('/:id', providers_1.ProvidersController.getProviderById);
+route.post('/', providers_1.ProvidersController.insert);
+route.put('/:id', providers_1.ProvidersController.update);
+exports.default = route;

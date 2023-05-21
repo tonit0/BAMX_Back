@@ -1,0 +1,10 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const revisions_1 = require("../controllers/revisions");
+const route = (0, express_1.Router)();
+route.get('/', revisions_1.RevisionsController.getAll);
+route.get('/:id', revisions_1.RevisionsController.getRevisionById);
+route.post('/', revisions_1.RevisionsController.insert);
+route.put('/:id', revisions_1.RevisionsController.update);
+exports.default = route;
