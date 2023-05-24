@@ -12,16 +12,24 @@ var _a;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.VehiclesService = void 0;
 const database_1 = require("../database");
+const brands_1 = require("./brands");
 class VehiclesService {
 }
 exports.VehiclesService = VehiclesService;
 _a = VehiclesService;
 VehiclesService.getVehicles = () => __awaiter(void 0, void 0, void 0, function* () {
+    const response = [];
     let [rows] = yield database_1.connection.execute('SELECT * FROM vehiculos ORDER BY id_vehiculo DESC');
     let vehicles = rows.map((r) => {
         return r;
     });
-    return vehicles;
+    for (let i = 0; i < vehicles.length; i++) {
+        const brand = yield brands_1.BrandsService.getBrandById(vehicles[i].id_marca.toString());
+        delete vehicles[i].id_marca;
+        vehicles[i].marca = brand[0];
+        response.push(vehicles[i]);
+    }
+    return response;
 });
 VehiclesService.getVehicleById = (id) => __awaiter(void 0, void 0, void 0, function* () {
     let [rows] = yield database_1.connection.execute('SELECT * FROM vehiculos WHERE id_vehiculo = ?', [id]);

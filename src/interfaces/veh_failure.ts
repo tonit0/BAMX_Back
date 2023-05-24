@@ -1,5 +1,9 @@
+import { Vehicle } from "./vehicle"
+
 export interface VehFailure {
     id_falla: String,
+    id_vehiculo?: String,
+    vehiculo?: Vehicle,
     descripcion: String,
     preferencia_de_entrega: String,
     fecha_falla: String,

@@ -4,4 +4,7 @@ const express_1 = require("express");
 const maintenances_1 = require("../controllers/maintenances");
 const route = (0, express_1.Router)();
 route.get('/', maintenances_1.MaintenancesController.getAll);
+route.get('/:id', maintenances_1.MaintenancesController.getMaintenanceById);
+route.post('/', maintenances_1.MaintenancesController.insert);
+route.put('/:id', maintenances_1.MaintenancesController.update);
 exports.default = route;

@@ -4,4 +4,7 @@ const express_1 = require("express");
 const products_services_1 = require("../controllers/products_services");
 const route = (0, express_1.Router)();
 route.get('/', products_services_1.ProductsServicesController.getAll);
+route.get('/:id', products_services_1.ProductsServicesController.getProductServiceById);
+route.post('/', products_services_1.ProductsServicesController.insert);
+route.put('/:id', products_services_1.ProductsServicesController.update);
 exports.default = route;

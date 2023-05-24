@@ -2,7 +2,7 @@ import { Vehicle } from "./vehicle"
 
 export interface Revision {
     id_revision: Number,
-    id_vehiculo: Number,
+    id_vehiculo?: Number,
     vehiculo?: Vehicle,
     fecha: String,
     hora: String,

@@ -1,23 +1,44 @@
 import { connection } from "../database";
 import { Vehicle } from "../interfaces/vehicle";
+import { BrandsService } from "./brands";
 
 class VehiclesService {
-    static getVehicles = async () => {     
+    static getVehicles = async () => {
+        const response: any = [];     
         let [rows] = await connection.execute('SELECT * FROM vehiculos ORDER BY id_vehiculo DESC');
         let vehicles: Vehicle[] = rows.map((r: any) => {
             return <Vehicle>r;
         })
 
-        return vehicles;
+        for(let i = 0; i < vehicles.length; i++) {
+            const brand = await BrandsService.getBrandById(
+                vehicles[i].id_marca!.toString()
+            );
+            delete vehicles[i].id_marca;
+            vehicles[i].marca = brand[0];
+            response.push(vehicles[i]);
+        }
+
+        return response;
     };
 
-    static getVehicleById = async (id: string) => {     
+    static getVehicleById = async (id: string) => {  
+        const response: any = [];     
         let [rows] = await connection.execute('SELECT * FROM vehiculos WHERE id_vehiculo = ?', [id]);
         let vehicles: Vehicle[] = rows.map((r: any) => {
             return <Vehicle>r;
         })
 
-        return vehicles;
+        for(let i = 0; i < vehicles.length; i++) {
+            const brand = await BrandsService.getBrandById(
+                vehicles[i].id_marca!.toString()
+            );
+            delete vehicles[i].id_marca;
+            vehicles[i].marca = brand[0];
+            response.push(vehicles[i]);
+        }
+
+        return response;
     };
 
     static insertVehicle = async (item: Vehicle) => {                

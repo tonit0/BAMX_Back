@@ -3,7 +3,7 @@ import { Brand } from "./brand"
 export interface Vehicle {
     id_vehiculo: String,
     nombre_vehiculo: String,
-    id_marca: String,
+    id_marca?: String,
     marca?: Brand,
     modelo: String,
     numero_serie_chasis: String,

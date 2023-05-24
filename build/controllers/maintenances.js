@@ -11,15 +11,47 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 var _a;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.MaintenancesController = void 0;
+const maintenances_1 = require("../services/maintenances");
 class MaintenancesController {
 }
 exports.MaintenancesController = MaintenancesController;
 _a = MaintenancesController;
 MaintenancesController.getAll = (_req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        //res.json(response);
+        const response = yield maintenances_1.MaintenancesService.getMaintenances();
+        res.json(response);
     }
     catch (e) {
-        //res.json(e);
+        res.json(e);
+    }
+});
+MaintenancesController.getMaintenanceById = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const id_get = req.params.id;
+        const response = yield maintenances_1.MaintenancesService.getMaintenanceById(id_get);
+        res.json(response);
+    }
+    catch (e) {
+        res.status(500).json(e);
+    }
+});
+MaintenancesController.insert = ({ body }, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const response = yield maintenances_1.MaintenancesService.insertMaintenance(body);
+        res.status(201).json({ message: "REGISTRADO CON ÉXITO" });
+    }
+    catch (e) {
+        res.status(500).json(e);
+    }
+});
+MaintenancesController.update = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const id = req.params.id;
+        const data = req.body;
+        yield maintenances_1.MaintenancesService.updateMaintenance(data, id);
+        res.status(201).json({ message: "ACTUALIZADO CON ÉXITO" });
+    }
+    catch (e) {
+        res.status(500).json(e);
     }
 });

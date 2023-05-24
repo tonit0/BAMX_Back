@@ -4,4 +4,7 @@ const express_1 = require("express");
 const inputs_outputs_1 = require("../controllers/inputs_outputs");
 const route = (0, express_1.Router)();
 route.get('/', inputs_outputs_1.InputsOutputsController.getAll);
+route.get('/:id', inputs_outputs_1.InputsOutputsController.getInputOutputById);
+route.post('/', inputs_outputs_1.InputsOutputsController.insert);
+route.put('/:id', inputs_outputs_1.InputsOutputsController.update);
 exports.default = route;

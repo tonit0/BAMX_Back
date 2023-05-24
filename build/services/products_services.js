@@ -11,9 +11,30 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 var _a;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ProductsServicesService = void 0;
+const database_1 = require("../database");
 class ProductsServicesService {
 }
 exports.ProductsServicesService = ProductsServicesService;
 _a = ProductsServicesService;
-ProductsServicesService.getProducts = () => __awaiter(void 0, void 0, void 0, function* () {
+ProductsServicesService.getProductsServices = () => __awaiter(void 0, void 0, void 0, function* () {
+    let [rows] = yield database_1.connection.execute('SELECT * FROM productos_servicios ORDER BY id_producto_servicio DESC');
+    let products_services = rows.map((r) => {
+        return r;
+    });
+    return products_services;
+});
+ProductsServicesService.getProductServiceById = (id) => __awaiter(void 0, void 0, void 0, function* () {
+    let [rows] = yield database_1.connection.execute('SELECT * FROM productos_servicios WHERE id_producto_servicio = ?', [id]);
+    let products_services = rows.map((r) => {
+        return r;
+    });
+    return products_services;
+});
+ProductsServicesService.insertProductService = (item) => __awaiter(void 0, void 0, void 0, function* () {
+    yield database_1.connection.query('INSERT INTO productos_servicios SET ?', [item]);
+    return item;
+});
+ProductsServicesService.updateProductService = (item, id) => __awaiter(void 0, void 0, void 0, function* () {
+    yield database_1.connection.query('UPDATE productos_servicios SET ? WHERE id_producto_servicio = ?', [item, id]);
+    return item;
 });

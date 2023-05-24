@@ -4,4 +4,7 @@ const express_1 = require("express");
 const veh_failures_1 = require("../controllers/veh_failures");
 const route = (0, express_1.Router)();
 route.get('/', veh_failures_1.VehFailuresController.getAll);
+route.get('/:id', veh_failures_1.VehFailuresController.getVehFailureById);
+route.post('/', veh_failures_1.VehFailuresController.insert);
+route.put('/:id', veh_failures_1.VehFailuresController.update);
 exports.default = route;
