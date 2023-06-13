@@ -30,6 +30,23 @@ VehFailuresService.getVehFailureById = (id) => __awaiter(void 0, void 0, void 0,
     });
     return products_services;
 });
+
+VehFailuresService.getVehFailureById_Concluded = (id) => __awaiter(void 0, void 0, void 0, function* () {
+    let [rows] = yield database_1.connection.execute('SELECT * FROM fallas_vehiculos WHERE id_falla = ? AND estatus = \'C\' ', [id]);
+    let products_services = rows.map((r) => {
+        return r;
+    });
+    return products_services;
+});
+
+VehFailuresService.getVehFailureById_Unfinished = (id) => __awaiter(void 0, void 0, void 0, function* () {
+    let [rows] = yield database_1.connection.execute('SELECT * FROM fallas_vehiculos WHERE id_falla = ? AND estatus = \'P\' ', [id]);
+    let products_services = rows.map((r) => {
+        return r;
+    });
+    return products_services;
+});
+
 VehFailuresService.insertVehFailure = (item) => __awaiter(void 0, void 0, void 0, function* () {
     yield database_1.connection.query('INSERT INTO fallas_vehiculos SET ?', [item]);
     return item;

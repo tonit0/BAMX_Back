@@ -35,6 +35,29 @@ VehFailuresController.getVehFailureById = (req, res) => __awaiter(void 0, void 0
         res.status(500).json(e);
     }
 });
+
+VehFailuresController.getVehFailureById_Concluded  = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const id_get = req.params.id;
+        const response = yield veh_failures_1.VehFailuresService.getVehFailureById_Concluded (id_get);
+        res.json(response);
+    }
+    catch (e) {
+        res.status(500).json(e);
+    }
+});
+
+VehFailuresController.getVehFailureById_Unfinished  = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const id_get = req.params.id;
+        const response = yield veh_failures_1.VehFailuresService.getVehFailureById_Unfinished (id_get);
+        res.json(response);
+    }
+    catch (e) {
+        res.status(500).json(e);
+    }
+});
+
 VehFailuresController.insert = ({ body }, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const response = yield veh_failures_1.VehFailuresService.insertVehFailure(body);
