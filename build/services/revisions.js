@@ -12,23 +12,38 @@ var _a;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.RevisionsService = void 0;
 const database_1 = require("../database");
+const vehicles_1 = require("./vehicles");
 class RevisionsService {
 }
 exports.RevisionsService = RevisionsService;
 _a = RevisionsService;
 RevisionsService.getRevisions = () => __awaiter(void 0, void 0, void 0, function* () {
+    const response = [];
     let [rows] = yield database_1.connection.execute('SELECT * FROM revisiones_diarias ORDER BY id_revision DESC');
     let revisions = rows.map((r) => {
         return r;
     });
-    return revisions;
+    for (let i = 0; i < revisions.length; i++) {
+        const vehicle = yield vehicles_1.VehiclesService.getVehicleById(revisions[i].id_vehiculo.toString());
+        delete revisions[i].id_vehiculo;
+        revisions[i].vehiculo = vehicle[0];
+        response.push(revisions[i]);
+    }
+    return response;
 });
 RevisionsService.getRevisionById = (id) => __awaiter(void 0, void 0, void 0, function* () {
+    const response = [];
     let [rows] = yield database_1.connection.execute('SELECT * FROM revisiones_diarias WHERE id_revision = ?', [id]);
     let revisions = rows.map((r) => {
         return r;
     });
-    return revisions;
+    for (let i = 0; i < revisions.length; i++) {
+        const vehicle = yield vehicles_1.VehiclesService.getVehicleById(revisions[i].id_vehiculo.toString());
+        delete revisions[i].id_vehiculo;
+        revisions[i].vehiculo = vehicle[0];
+        response.push(revisions[i]);
+    }
+    return response;
 });
 RevisionsService.insertRevision = (item) => __awaiter(void 0, void 0, void 0, function* () {
     yield database_1.connection.query('INSERT INTO revisiones_diarias SET ?', [item]);

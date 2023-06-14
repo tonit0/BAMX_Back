@@ -32,11 +32,18 @@ VehiclesService.getVehicles = () => __awaiter(void 0, void 0, void 0, function* 
     return response;
 });
 VehiclesService.getVehicleById = (id) => __awaiter(void 0, void 0, void 0, function* () {
+    const response = [];
     let [rows] = yield database_1.connection.execute('SELECT * FROM vehiculos WHERE id_vehiculo = ?', [id]);
     let vehicles = rows.map((r) => {
         return r;
     });
-    return vehicles;
+    for (let i = 0; i < vehicles.length; i++) {
+        const brand = yield brands_1.BrandsService.getBrandById(vehicles[i].id_marca.toString());
+        delete vehicles[i].id_marca;
+        vehicles[i].marca = brand[0];
+        response.push(vehicles[i]);
+    }
+    return response;
 });
 VehiclesService.insertVehicle = (item) => __awaiter(void 0, void 0, void 0, function* () {
     yield database_1.connection.query('INSERT INTO vehiculos SET ?', [item]);

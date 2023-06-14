@@ -12,23 +12,38 @@ var _a;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.VehFailuresService = void 0;
 const database_1 = require("../database");
+const vehicles_1 = require("./vehicles");
 class VehFailuresService {
 }
 exports.VehFailuresService = VehFailuresService;
 _a = VehFailuresService;
 VehFailuresService.getVehFailures = () => __awaiter(void 0, void 0, void 0, function* () {
+    const response = [];
     let [rows] = yield database_1.connection.execute('SELECT * FROM fallas_vehiculos ORDER BY id_falla DESC');
-    let products_services = rows.map((r) => {
+    let veh_failures = rows.map((r) => {
         return r;
     });
-    return products_services;
+    for (let i = 0; i < veh_failures.length; i++) {
+        const vehicle = yield vehicles_1.VehiclesService.getVehicleById(veh_failures[i].id_vehiculo.toString());
+        delete veh_failures[i].id_vehiculo;
+        veh_failures[i].vehiculo = vehicle[0];
+        response.push(veh_failures[i]);
+    }
+    return response;
 });
 VehFailuresService.getVehFailureById = (id) => __awaiter(void 0, void 0, void 0, function* () {
+    const response = [];
     let [rows] = yield database_1.connection.execute('SELECT * FROM fallas_vehiculos WHERE id_falla = ?', [id]);
-    let products_services = rows.map((r) => {
+    let veh_failures = rows.map((r) => {
         return r;
     });
-    return products_services;
+    for (let i = 0; i < veh_failures.length; i++) {
+        const vehicle = yield vehicles_1.VehiclesService.getVehicleById(veh_failures[i].id_vehiculo.toString());
+        delete veh_failures[i].id_vehiculo;
+        veh_failures[i].vehiculo = vehicle[0];
+        response.push(veh_failures[i]);
+    }
+    return response;
 });
 VehFailuresService.insertVehFailure = (item) => __awaiter(void 0, void 0, void 0, function* () {
     yield database_1.connection.query('INSERT INTO fallas_vehiculos SET ?', [item]);

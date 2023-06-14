@@ -12,23 +12,38 @@ var _a;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.EmployeesService = void 0;
 const database_1 = require("../database");
+const positions_1 = require("./positions");
 class EmployeesService {
 }
 exports.EmployeesService = EmployeesService;
 _a = EmployeesService;
 EmployeesService.getEmployees = () => __awaiter(void 0, void 0, void 0, function* () {
+    const response = [];
     let [rows] = yield database_1.connection.execute('SELECT * FROM empleados ORDER BY id_empleado DESC');
     let employees = rows.map((r) => {
         return r;
     });
-    return employees;
+    for (let i = 0; i < employees.length; i++) {
+        const position = yield positions_1.PositionsService.getPositionById(employees[i].id_puesto.toString());
+        delete employees[i].id_puesto;
+        employees[i].puesto = position[0];
+        response.push(employees[i]);
+    }
+    return response;
 });
 EmployeesService.getEmployeeById = (id) => __awaiter(void 0, void 0, void 0, function* () {
+    const response = [];
     let [rows] = yield database_1.connection.execute('SELECT * FROM empleados WHERE id_empleado = ?', [id]);
     let employees = rows.map((r) => {
         return r;
     });
-    return employees;
+    for (let i = 0; i < employees.length; i++) {
+        const position = yield positions_1.PositionsService.getPositionById(employees[i].id_puesto.toString());
+        delete employees[i].id_puesto;
+        employees[i].puesto = position[0];
+        response.push(employees[i]);
+    }
+    return response;
 });
 EmployeesService.insertEmployee = (item) => __awaiter(void 0, void 0, void 0, function* () {
     yield database_1.connection.query('INSERT INTO empleados SET ?', [item]);
