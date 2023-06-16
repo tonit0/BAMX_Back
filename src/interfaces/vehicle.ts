@@ -14,5 +14,10 @@ export interface Vehicle {
     rendimiento_combustible: Number,
     placas: String,
     url_foto: String,
+    cambio_de_aceite: Number,
+    afinacion: Number,
+    frenos: Number,
+    arranque_y_alternador: Number,
     estatus: String
+    
 }

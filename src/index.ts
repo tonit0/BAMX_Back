@@ -2,11 +2,14 @@ import "dotenv/config";
 import express from "express";
 import cors from "cors";
 import routes from "./routes/index";
+const path = require('path');
+import fileUpload from "express-fileupload";
 
 const PORT = process.env.PORT || 3001;
 
 const app = express();
 
+app.use(fileUpload());
 app.use((_req, res, next) => {
     res.setHeader("Access-Control-Allow-Origin", "*");
     res.header(
@@ -15,7 +18,7 @@ app.use((_req, res, next) => {
     );
     next();
 });
-
+app.use(express.static(path.resolve(__dirname, '../files')));
 
 app.use(cors());
 

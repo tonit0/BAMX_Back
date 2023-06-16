@@ -51,6 +51,14 @@ class VehiclesService {
         return item;
     };
 
+    static getLastId = async () => {
+        let [rows] = await connection.query('SELECT id_vehiculo from vehiculos ORDER BY id_vehiculo DESC LIMIT 1;');
+        let veh = rows.map((r: any) => {
+            return r;
+        });
+        return veh[0]['id_vehiculo'];
+    };
+
 }
 
 export { VehiclesService };

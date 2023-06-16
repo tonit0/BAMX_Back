@@ -53,3 +53,10 @@ VehiclesService.updateVehicle = (item, id) => __awaiter(void 0, void 0, void 0, 
     yield database_1.connection.query('UPDATE vehiculos SET ? WHERE id_vehiculo = ?', [item, id]);
     return item;
 });
+VehiclesService.getLastId = () => __awaiter(void 0, void 0, void 0, function* () {
+    let [rows] = yield database_1.connection.query('SELECT id_vehiculo from vehiculos ORDER BY id_vehiculo DESC LIMIT 1;');
+    let veh = rows.map((r) => {
+        return r;
+    });
+    return veh[0]['id_vehiculo'];
+});

@@ -12,6 +12,7 @@ var _a;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.VehiclesController = void 0;
 const vehicles_1 = require("../services/vehicles");
+var path = require('path');
 class VehiclesController {
 }
 exports.VehiclesController = VehiclesController;
@@ -35,10 +36,28 @@ VehiclesController.getVehicleById = (req, res) => __awaiter(void 0, void 0, void
         res.status(500).json(e);
     }
 });
-VehiclesController.insert = ({ body }, res) => __awaiter(void 0, void 0, void 0, function* () {
+VehiclesController.insert = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const response = yield vehicles_1.VehiclesService.insertVehicle(body);
-        res.status(201).json({ message: "REGISTRADO CON ÉXITO" });
+        if (req.files) {
+            const file = req.files.image;
+            const extFile = path.extname(file.name);
+            const allowedExtension = ['.png', '.jpg', '.jpeg'];
+            if (!allowedExtension.includes(extFile)) {
+                res.status(415).send("IMAGEN INVÁLIDA");
+            }
+            else {
+                let data = req.body;
+                yield vehicles_1.VehiclesService.insertVehicle(req.body);
+                const id = yield vehicles_1.VehiclesService.getLastId();
+                data.url_foto = id + extFile;
+                yield vehicles_1.VehiclesService.updateVehicle(data, id);
+                file.mv(process.env.FILES_ROOT + "vehiculos/" + id + extFile);
+                res.status(201).json({ message: "REGISTRADO CON ÉXITO" });
+            }
+        }
+        else {
+            res.status(204).json({ message: "IMAGEN ENVIADA" });
+        }
     }
     catch (e) {
         res.status(500).json(e);
@@ -49,6 +68,19 @@ VehiclesController.update = (req, res) => __awaiter(void 0, void 0, void 0, func
         const id = req.params.id;
         const data = req.body;
         yield vehicles_1.VehiclesService.updateVehicle(data, id);
+        if (req.files) {
+            const allowedExtension = ['.png', '.jpg', '.jpeg'];
+            const file = req.files.image;
+            const extFile = path.extname(file.name);
+            if (!allowedExtension.includes(extFile)) {
+                res.status(415).send("IMAGEN INVÁLIDA");
+            }
+            else {
+                data.url_foto = id + extFile;
+                yield vehicles_1.VehiclesService.updateVehicle(data, id);
+                file.mv(process.env.FILES_ROOT + "vehiculos/" + id + extFile);
+            }
+        }
         res.status(201).json({ message: "ACTUALIZADO CON ÉXITO" });
     }
     catch (e) {
